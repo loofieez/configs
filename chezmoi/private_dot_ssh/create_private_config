@@ -1,0 +1,30 @@
+# ~/.ssh/config
+
+# ssh config
+# https://cheat.sh/ssh
+# https://www.1password.dev/ssh
+# https://linux.die.net/man/5/ssh_config
+# https://man7.org/linux/man-pages/man5/ssh_config.5.html
+
+# import colima ssh config
+Include ~/.colima/ssh_config
+# import 1Password ssh config
+Include ~/.ssh/1Password/config
+
+# global
+Host *
+  ForwardAgent no
+  ServerAliveCountMax 3
+  ServerAliveInterval 600
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  # set identity agent to 1Password
+  IdentityAgent ~/.1Password/agent.sock
+
+Host github.com
+  User git
+  IdentitiesOnly yes
+  HostName github.com
+  # pull from 1Password
+  # hack: six-key limitation
+  IdentityFile ~/.ssh/remote/auth.pub

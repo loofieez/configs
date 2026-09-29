@@ -1,0 +1,7 @@
+# ~/projects/local/.gitconfig
+
+# local specific gitconfig
+
+[user]
+  name = "sarvagya"
+  email = "sarvagyas@pm.me"

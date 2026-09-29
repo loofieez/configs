@@ -1,0 +1,9 @@
+[ ] configure chezmoi
+[ ] add fish shell configs
+[ ] configure ghostty terminal emulator
+[ ] configure zellij multiplexer
+[ ] add backup of raycast (partial) script commands
+[ ] configure zed ide configs
+[x] add backup of obsidian web-clippers templ [#]
+[x] add ssh_configs [#]
+[x] setup project directories [#]

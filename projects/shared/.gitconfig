@@ -1,0 +1,7 @@
+# ~/projects/shared/.gitconfig
+
+# shared gitconfig
+
+[user]
+  name = "sarvagya"
+  email = "sarvagyas@pm.me"
