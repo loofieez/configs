@@ -26,5 +26,5 @@ Host github.com
   IdentitiesOnly yes
   HostName github.com
   # pull from 1Password
-  # hack: six-key limitation
+  # HACK: six-key limitation
   IdentityFile ~/.ssh/remote/auth.pub

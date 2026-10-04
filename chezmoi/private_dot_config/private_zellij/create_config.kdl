@@ -1,0 +1,102 @@
+// ~/.config/zellij/config.kdl
+// zellij main config (modified)
+
+// zellij config have two halves:
+//  - keybinds: keybindings for zellij
+//  - top-level options: global behavior settings
+
+// how keybinding works in zellij
+// at any instance, exactly one mode is active, and a key-press
+// is locked up only in that mode's table. three kinds of bindings exists,
+// and they are read in this order:
+//  1. shared: -> written `ctrl + g`, `alt + h`, `esc`, `enter`.
+//                declared in `shared_among` / `shared_except` blocks and
+//                apply to several modes at once.
+//  2. mode: ->   written `ctrl + p`, `ctrl + t`, .....
+//                the "enterypoint" key that switched you INTO a mode.
+//  3. option: -> written `c`, `s`, `x`, `left`, `tab`.
+//                the single key that performs an action inside a mode.
+// NOTE: a full chord is therefore: shared keys -> mode keys -> option keys
+
+// working examples: create a stacked pane
+//  1. `ctrl + g` -> shared key: unlock `locked`, entering `normal` mode.
+//                   (pressing `ctrl + g` again re-locks, so it is a toggle`)
+//  2. `p`        -> mode key: switch from `normal` to `pane` mode.
+//  3. `s`        -> option key: `NewPane "stacked"`, then back to `locked`.
+// NOTE: shorthand used throughout this file: `ctrl g, p, s`.
+
+// why `locked` is the default mode?
+// because I choosed this mode as default. hehe
+// `default_mode "locked"` means zellij starts with every keystroke passed
+// straight through the program inside the pane. nothing is intercepted,
+// untill you press `ctrl + g` to switch to `normal` mode.
+// this is what makes zellij safe to run inside neovim, htop, fzf, etc.
+// your normal keys are never swallowed by the multiplexer.
+
+// `keybinding clear-defaults=true` discards zellij's default keybindings,
+// so you must define all keybindings yourself. that is why every mode you care about
+// must be spelled out explicitly here.
+keybinds clear-defaults=true {
+
+    // mode: locked (default mode)
+    // the "do nothing" mode.
+    // enterypoint: `ctrl g` from any mode (see `shared_except` below)
+    // exit:        `ctrl g` -> `normal` mode.
+    locked {
+        // key:    `ctrl g`
+        // action: unlock the multiplexer, leave `locked` and enter `normal`, from
+        //         which the mode keys (`p`, `t`, `r`, `m`, `s`, `o`) become live.
+        //         pressing `ctrl g` again will switch back to `locked`.
+        bind "Ctrl g" { SwitchToMode "normal"; }
+    }
+}
+
+// mode: pane (window/pane management)
+// everything about panes: focus, create, closing, floating, fullscreen,
+// stacking, pinning, renaming.
+// enterypoint: `ctrl g , p` (from normal / resize / tab / scroll / ...)
+// exit:        `ctrl g , p , p` -> normal, or any action that ends with
+//              `SwitchToMode "locked"` (most of them do).
+pane {
+
+    // key:    `ctrl g , p , left`
+    // action: move focus pane to left.
+    bind "left" { MoveFocus "left"; }
+
+    // key:    `ctrl g , p , down`
+    // action: move focus pane to down.
+    bind "down" { MoveFocus "down"; }
+
+    // key:    `ctrl g , p , up`
+    // action: move focus pane to up.
+    bind "up" { MoveFocus "up"; }
+
+    // key:    `ctrl g , p , right`
+    // action: move focus pane to right.
+    bind "right" { MoveFocus "right"; }
+
+    // key:    `ctrl g , p , ;`
+    // action: jump back to previously focused pane.
+    //         floating panes are taken into account, and if the current pane is
+    //         fullscreen the two panes are swapped in place.
+    bind ";" { FocusLastPane; }
+
+    bind "c" { SwitchToMode "renamepane"; PaneNameInput 0; }
+    bind "d" { NewPane "down"; SwitchToMode "locked"; }
+    bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "locked"; }
+    bind "f" { ToggleFocusFullscreen; SwitchToMode "locked"; }
+    bind "Shift f" { ToggleFocusNoUiFullscreen; SwitchToMode "locked"; }
+    bind "h" { MoveFocus "left"; }
+    bind "i" { TogglePanePinned; SwitchToMode "locked"; }
+    bind "j" { MoveFocus "down"; }
+    bind "k" { MoveFocus "up"; }
+    bind "l" { MoveFocus "right"; }
+    bind "n" { NewPane; SwitchToMode "locked"; }
+    bind "p" { SwitchToMode "normal"; }
+    bind "r" { NewPane "right"; SwitchToMode "locked"; }
+    bind "s" { NewPane "stacked"; SwitchToMode "locked"; }
+    bind "w" { ToggleFloatingPanes; SwitchToMode "locked"; }
+    bind "x" { CloseFocus; SwitchToMode "locked"; }
+    bind "z" { TogglePaneFrames; SwitchToMode "locked"; }
+    bind "tab" { SwitchFocus; }
+}

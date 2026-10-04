@@ -1,0 +1,11 @@
+[
+  {
+    "name": "search: google",
+    "link": "https://google.com/search?q={argument}",
+    "icon": "default",
+    "tags": [
+      "google",
+      "search"
+    ]
+  }
+]

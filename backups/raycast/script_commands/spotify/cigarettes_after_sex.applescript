@@ -23,6 +23,7 @@ on run
 
     # main event block
     tell application "Spotify"
+        activate
         # set spotify volume to 100
         set sound volume to 100
         # shuffling off
@@ -31,7 +32,7 @@ on run
         play track "spotify:playlist:37i9dQZF1DZ06evO12tsHe"
     end tell
 
-    # hack: hide spotify window
+    # HACK: hide spotify window
     # after the playlist is played
     tell application "System Events"
         set visible of process "Spotify" to false
